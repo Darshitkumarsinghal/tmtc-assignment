@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/tmtc
+      - JWT_SECRET=supersecretkey
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
