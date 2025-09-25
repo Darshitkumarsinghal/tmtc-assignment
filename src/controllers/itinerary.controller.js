@@ -1,6 +1,8 @@
 const Itinerary = require('../models/Itinerary');
 const { createShare, getShare } = require('../utils/shareLink');
 const { getClient } = require('../config/redis');
+const sendMail = require("../config/mailer");
+const User = require('../models/User');
 
 const CACHE_TTL = 300; // 5 minutes
 
@@ -8,6 +10,16 @@ exports.createItinerary = async (req, res, next) => {
   try {
     const payload = { ...req.body, userId: req.user._id };
     const it = await Itinerary.create(payload);
+    // 📧 Send email notification
+    const user = await User.findById(req.user._id);
+    if (user && user.email) {
+      await sendMail(
+        user.email,
+        "New Itinerary Created",
+        `Hi ${user.name}, you created a new itinerary: ${it.title}`,
+        `<h3>Hi ${user.name},</h3><p>You created a new itinerary: <b>${it.title}</b> to ${it.destination}.</p>`
+      );
+    }
     res.status(201).json(it);
   } catch (err) { next(err); }
 };
