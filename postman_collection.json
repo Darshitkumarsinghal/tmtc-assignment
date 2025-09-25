@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "TMTC API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://tmtc-assignment.onrender.com"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Test User\", \"email\": \"test@example.com\", \"password\": \"123456\" }"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"test@example.com\", \"password\": \"123456\" }"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Itineraries",
+      "item": [
+        {
+          "name": "Create Itinerary",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Paris Trip\", \"destination\": \"Paris\", \"startDate\": \"2025-10-01\", \"endDate\": \"2025-10-05\", \"activities\": [] }"
+            }
+          }
+        },
+        {
+          "name": "Get All Itineraries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries?page=1&limit=10&destination=Paris&sort=startDate"
+          }
+        },
+        {
+          "name": "Get Itinerary By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries/:id"
+          }
+        },
+        {
+          "name": "Update Itinerary",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries/:id",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Paris Trip Updated\" }"
+            }
+          }
+        },
+        {
+          "name": "Delete Itinerary",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries/:id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sharing",
+      "item": [
+        {
+          "name": "Create Shareable Link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/itineraries/:id/share"
+          }
+        },
+        {
+          "name": "Get Shared Itinerary (Public)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/itineraries/share/:shareId"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Utility",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "GraphQL Example",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/graphql",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"query\": \"{ itineraries { _id title destination } }\" }"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
